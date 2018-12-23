@@ -1,0 +1,34 @@
+{
+  "name": "natural gas prices",
+  "title": "Natural gas prices data",
+  "description": "natural gas pricees thorug tme period 1197-2018",
+  "sources": [{
+    "title": "US Eneregy information and administration",
+    "path": "https://www.eia.gov/dnav/ng/hist/rngwhhdD.htm"
+  }],
+  "contributors":[ {
+    "title": "Stefan Boskovic",
+    "email": "stefanbole94@gmail.com",
+    "role": "author"
+  }],
+  "resources": [
+    {
+      "name": "dailyPrices.csv",
+      "path": "../DataPackage/dailyPrices.csv"  
+    },
+    {
+      "name": "weeklyPrices.csv",
+      "path": "../DataPackage/weeklyPrices.csv"  
+    },
+    {
+      "name": "monthlyPrices.csv",
+      "path": "../DataPackage/monthlyPrices.csv"  
+    },
+    {
+      "name": "anualyPrices.csv",
+      "path": "../DataPackage/anualyPrices.csv"  
+    }
+    
+  ]
+ 
+}
