@@ -1,25 +1,15 @@
-import urllib.request  as urllib2
-import requests
-from openpyxl import load_workbook
-import json
-import datetime
 import pandas as pd
-import xlrd
 import numpy as np
+import plotly as py
+import plotly.graph_objs as go
 import csv
-from bs4 import BeautifulSoup
 
 
-
-#dls = "http://www.eia.gov/dnav/ng/hist_xls/RNGWHHDd.xls"
-#resp = requests.get(dls)
-
-#output = open('daily.xls', 'wb')
-#output.write(resp.content)
-#output.close()
 def getData():
+    # acquiring data using pandas
     dailyGas = pd.read_excel('http://www.eia.gov/dnav/ng/hist_xls/RNGWHHDd.xls',sheet_name=1);
 
+    # turning it into array
     totalRows = dailyGas.__len__()
     dailyGasArray = np.array(dailyGas)
 
@@ -27,7 +17,7 @@ def getData():
 
     for rowNum in range(2,totalRows):
         rowObject = {}
-        print(dailyGasArray[rowNum,0])
+      #  print(dailyGasArray[rowNum,0])
         rowObject['dateValue'] = dailyGasArray[rowNum,0].date()
         rowObject['priceValue'] = dailyGasArray[rowNum,1]
         retData.append(rowObject)
@@ -44,11 +34,31 @@ def createCsv(data):
         for x in data:
             writer.writerow({'date': x['dateValue'], 'value': x['priceValue']})
 
+def plot(dates,values):
+    py.offline.plot({
+        "data": [go.Scatter(x=dates, y=values)],
+        "layout": go.Layout(title="daily gas price value")
+    }, auto_open=True)
+
 
 def main():
 
     data = getData()
     createCsv(data)
+
+    dates = []
+    values = []
+
+
+    for rowNum in range(0,data.__len__()):
+        print(rowNum)
+        rowDate = data[rowNum]['dateValue']
+        rowValue = data[rowNum]['priceValue']
+        dates.append(rowDate)
+        values.append(rowValue)
+
+
+    plot(dates,values)
 
 
 

@@ -1,10 +1,8 @@
 import pandas as pd
-
+import plotly as py
+import plotly.graph_objs as go
 import numpy as np
 import csv
-import matplotlib.pyplot as plt
-
-
 
 
 
@@ -29,7 +27,7 @@ def getData():
 
 
 def createCsv(data):
-    myFile = open('../DataPackage/annualyPrices.csv', 'w')
+    myFile = open('../DataPackage/anualyPrices.csv', 'w')
     with myFile:
         myFields = ['date', 'value']
         writer = csv.DictWriter(myFile, fieldnames=myFields)
@@ -38,18 +36,28 @@ def createCsv(data):
             writer.writerow({'date': x['dateValue'], 'value': x['priceValue']})
 
 
-def plot(data):
-    x = np.linspace(0,5,100)
-    y = np.linspace(0,5,100)
-    plt.figure()
-    plt.plot(x,y)
-    plt.show()
+def plot(dates,values):
+    py.offline.plot({
+        "data": [go.Scatter(x=dates, y=values)],
+        "layout": go.Layout(title="anual gas price value")
+    }, auto_open=True)
+
 
 def main():
     data = getData()
     createCsv(data)
-  #  print(data)
-   # plot(data)
+
+
+    dates = []
+    values = []
+
+    for rowNum in range(0, data.__len__()):
+        rowDate = data[rowNum]['dateValue']
+        rowValue = data[rowNum]['priceValue']
+        dates.append(rowDate)
+        values.append(rowValue)
+
+    plot(dates, values)
 
 
 

@@ -1,10 +1,9 @@
 
 import pandas as pd
-
+import plotly as py
+import plotly.graph_objs as go
 import numpy as np
 import csv
-
-
 
 
 
@@ -16,6 +15,8 @@ def getData():
 
     ftdData = []
 
+
+    # months can start on monday first monday in the month can only fall on 1,2,3 of the month
     for rowNum in range(2,totalRows):
         ftObject = {}
         if dailyGasArray[rowNum,0].day == 1:
@@ -70,11 +71,27 @@ def createCsv(data):
         for x in data:
             writer.writerow({'date': x['dateValue'], 'value': x['priceValue']})
 
+def plot(dates,values):
+    py.offline.plot({
+        "data": [go.Scatter(x=dates, y=values)],
+        "layout": go.Layout(title="monthly gas price value")
+    }, auto_open=True)
+
 
 def main():
 
     data = getData()
     createCsv(data)
+    dates = []
+    values = []
+
+    for rowNum in range(0, data.__len__()):
+        rowDate = data[rowNum]['dateValue']
+        rowValue = data[rowNum]['priceValue']
+        dates.append(rowDate)
+        values.append(rowValue)
+
+    plot(dates, values)
 
 
 

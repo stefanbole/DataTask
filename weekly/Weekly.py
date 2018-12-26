@@ -1,12 +1,9 @@
 import pandas as pd
-import xlrd
+
 import numpy as np
 import csv
-import matplotlib.pyplot as plt
-
-import plotly.plotly as py
+import plotly as py
 import plotly.graph_objs as go
-
 
 
 def getData():
@@ -39,18 +36,27 @@ def createCsv(data):
             writer.writerow({'date': x['dateValue'], 'value': x['priceValue']})
 
 
-def plot(data):
-    x = np.linspace(0,5,100)
-    y = np.linspace(0,5,100)
-    plt.figure()
-    plt.plot(x,y)
-    plt.show()
+def plot(dates,values):
+    py.offline.plot({
+        "data": [go.Scatter(x=dates, y=values)],
+        "layout": go.Layout(title="weekly gas price value")
+    }, auto_open=True)
 
 def main():
     data = getData()
     createCsv(data)
-    print(data)
-#    plot(data)
+
+    dates = []
+    values = []
+
+    for rowNum in range(0, data.__len__()):
+        rowDate = data[rowNum]['dateValue']
+        rowValue = data[rowNum]['priceValue']
+        dates.append(rowDate)
+        values.append(rowValue)
+
+    plot(dates, values)
+
 
 
 
